@@ -1,0 +1,169 @@
+{
+    "determenite_student_sleep": 
+    {
+        "conditions": [ ["solution_mark", "eq", "null"], "and", ["student_in_mood", "eq", "null"], "and", ["student_good_sleep", "eq", "null"]],
+        "actions": [ {"func": "yes_or_no", "arg_1": "student_good_sleep", "arg_2": "Student have good sleep?: "} ]
+    },
+    "determenite_student_eat":
+    {
+        "conditions": [ ["solution_mark", "eq", "null"], "and", ["student_in_mood", "eq", "null"], "and", ["student_good_eat", "eq", "null"]],
+        "actions": [ {"func": "yes_or_no", "arg_1": "student_good_eat", "arg_2": "Student have good breakfast?: "} ]
+    },
+    "determenite_student_perfomance":
+    {
+        "conditions": [ ["solution_mark", "eq", "null"], "and", ["student_perfomance", "eq", "null"] ],
+        "actions": [{"func": "ask_int", "arg_1": "student_perfomance", "arg_2": "How muck homeworks student reach?: "}]
+    },
+    "determenite_lections":
+    {
+        "conditions": [ ["solution_mark", "eq", "null"], "and", ["student_was_on_lections", "eq", "null"] ],
+        "actions": [ {"func": "yes_or_no", "arg_1": "student_was_on_lections", "arg_2": "Student went on all lections?: "} ]
+    },
+    "determenite_auditory":
+    {
+        "conditions": [ ["solution_mark", "eq", "null"], "and", ["teacher_in_mood", "eq", "null"], "and", ["auditory_good", "eq", "null"] ],
+        "actions": [ {"func": "yes_or_no", "arg_1": "auditory_good", "arg_2": "Auditory good?: "} ]
+    },
+    "determenite_students":
+    {
+        "conditions": [ ["solution_mark", "eq", "null"], "and", ["teacher_in_mood", "eq", "null"], "and", ["students_fast", "eq", "null"] ],
+        "actions": [ {"func": "yes_or_no", "arg_1": "students_fast", "arg_2": "Students were before begin exam?: "} ]
+    },
+
+    "RULE-1-student-in-mood-yes": 
+    {
+        "conditions": [ ["student_good_sleep", "eq", "yes"], "or", ["student_good_eat", "eq", "yes"] ],
+        "actions": [
+            {"func": "assert", "arg_1": "student_in_mood", "arg_2": "yes"},
+            {"func": "print", "arg_1": "Student in mood: Yes"}
+        ]
+    },
+    "RULE-2-student-in-mood-no": 
+    {
+        "conditions": [ ["student_good_sleep", "eq", "no"], "and", ["student_good_eat", "eq", "no"] ],
+        "actions": [
+            {"func": "assert", "arg_1": "student_in_mood", "arg_2": "no"},
+            {"func": "print", "arg_1": "Student in mood: No"}
+        ]
+    },
+    "RULE-3-student-end-perfomance-best": 
+    {
+        "conditions": [ ["student_best_perfomance", "eq", "null"], "and", ["student_good_perfomance", "eq", "null"], "and", ["student_bad_perfomance", "eq", "null"], "and", ["student_perfomance","eq",7] ],
+        "actions": [
+            {"func": "assert", "arg_1": "student_best_perfomance", "arg_2": "yes"},
+            {"func": "print", "arg_1": "Student have perfoming: Best"}
+        ]
+    },
+    "RULE-4-student-end-perfomance-good": 
+    {
+        "conditions": [ ["student_best_perfomance", "eq", "null"], "and", ["student_good_perfomance", "eq", "null"], "and", ["student_bad_perfomance", "eq", "null"], "and", ["student_perfomance","<",7], "and", ["student_perfomance",">=",5] ],
+        "actions": [
+            {"func": "assert", "arg_1": "student_good_perfomance", "arg_2": "yes"},
+            {"func": "print", "arg_1": "Student have perfoming: Good"}
+        ]
+    },
+    "RULE-5-student-end-perfomance-bad": 
+    {
+        "conditions": [ ["student_best_perfomance", "eq", "null"], "and", ["student_good_perfomance", "eq", "null"], "and", ["student_bad_perfomance", "eq", "null"], "and", ["student_perfomance","<",5] ],
+        "actions": [
+            {"func": "assert", "arg_1": "student_bad_perfomance", "arg_2": "yes"},
+            {"func": "print", "arg_1": "Student have perfoming: Bad"}
+        ]
+    },
+    "RULE-6-teacher-in-mood-yes": 
+    {
+        "conditions": [ ["auditory_good", "eq", "yes"], "or", ["students_fast", "eq", "yes"] ],
+        "actions": [
+            {"func": "assert", "arg_1": "teacher_in_mood", "arg_2": "yes"},
+            {"func": "print", "arg_1": "Teacher_in_mood: Yes"}
+        ]
+    },
+    "RULE-7-teacher-in-mood-no": 
+    {
+        "conditions": [ ["auditory_good", "eq", "no"], "or", ["students_fast", "eq", "no"] ],
+        "actions": [
+            {"func": "assert", "arg_1": "teacher_in_mood", "arg_2": "no"},
+            {"func": "print", "arg_1": "Teacher_in_mood: No"}
+        ]
+    },
+    "RULE-8-exam-is-good-yes": 
+    {
+        "conditions": [ ["student_in_mood", "eq", "yes"], "or", ["student_best_perfomance", "eq", "yes"], "or", ["student_good_perfomance", "eq", "yes"] ],
+        "actions": [
+            {"func": "assert", "arg_1": "student_exam_good", "arg_2": "yes"},
+            {"func": "print", "arg_1": "Student_exam_good: Yes"}
+        ]
+    },
+    "RULE-9-exam-is-good-no": 
+    {
+        "conditions": [ ["student_in_mood", "eq", "no"], "and", ["student_bad_perfomance", "eq", "yes"] ],
+        "actions": [
+            {"func": "assert", "arg_1": "student_exam_good", "arg_2": "no"},
+            {"func": "print", "arg_1": "Student_exam_good: No"}
+        ]
+    },
+    "RULE-10-student-got-add-question-yes": 
+    {
+        "conditions": [ ["student_exam_good", "eq", "no"], "and", ["teacher_in_mood", "eq", "yes"] ],
+        "actions": [
+            {"func": "assert", "arg_1": "student_add_question", "arg_2": "yes"},
+            {"func": "print", "arg_1": "Student have add question: Yes"}
+        ]
+    },
+    "RULE-11-student-got-add-question-no": 
+    {
+        "conditions": [ ["student_exam_good", "eq", "no"], "and", ["teacher_in_mood", "eq", "no"] ],
+        "actions": [
+            {"func": "assert", "arg_1": "student_add_question", "arg_2": "no"},
+            {"func": "print", "arg_1": "Student have add question: No"}
+        ]
+    },
+    "RULE-12-student-add-question-is-good-yes": 
+    {
+        "conditions": [ ["student_was_on_lections", "eq", "yes"], "and", ["student_add_question", "eq", "yes"] ],
+        "actions": [
+            {"func": "assert", "arg_1": "student_add_question_good", "arg_2": "yes"},
+            {"func": "print", "arg_1": "Student add question is good: Yes"}
+        ]
+    },
+    "RULE-13-student-add-question-is-good-no": 
+    {
+        "conditions": [ ["student_was_on_lections", "eq", "no"], "and", ["student_add_question", "eq", "yes"] ],
+        "actions": [
+            {"func": "assert", "arg_1": "student_add_question_good", "arg_2": "no"},
+            {"func": "print", "arg_1": "Student add question is good: No"}
+        ]
+    },
+    "RULE-14-result_mark2": 
+    {
+        "conditions": [ ["student_add_question", "eq", "no"], "or", ["student_add_question_good", "eq", "no"], "and", ["solution_mark", "eq", "null"]  ],
+        "actions": [
+            {"func": "assert", "arg_1": "solution_mark", "arg_2": "Mark 2"},
+            {"func": "print", "arg_1": "Result: Mark 2"}
+        ]
+    },
+    "RULE-15-result_mark3": 
+    {
+        "conditions": [ ["student_bad_perfomance", "eq", "yes"], "and", ["student_add_question_good", "eq", "yes"], "or", ["student_exam_good", "eq", "yes"], "and", ["student_bad_perfomance", "eq", "yes"], "and", ["solution_mark", "eq", "null"]  ],
+        "actions": [
+            {"func": "assert", "arg_1": "solution_mark", "arg_2": "Mark 3"},
+            {"func": "print", "arg_1": "Result: Mark 3"}
+        ]
+    },
+    "RULE-16-result_mark4": 
+    {
+        "conditions": [ ["student_good_perfomance", "eq", "yes"], "and", ["student_add_question_good", "eq", "yes"], "or", ["student_exam_good", "eq", "yes"], "and", ["student_good_perfomance", "eq", "yes"], "and", ["solution_mark", "eq", "null"]  ],
+        "actions": [
+            {"func": "assert", "arg_1": "solution_mark", "arg_2": "Mark 4"},
+            {"func": "print", "arg_1": "Result: Mark 4"}
+        ]
+    },
+    "RULE-17-result_mark5": 
+    {
+        "conditions": [ ["student_best_perfomance", "eq", "yes"], "and", ["student_add_question_good", "eq", "yes"], "or", ["student_exam_good", "eq", "yes"], "and", ["student_best_perfomance", "eq", "yes"], "and", ["solution_mark", "eq", "null"]  ],
+        "actions": [
+            {"func": "assert", "arg_1": "solution_mark", "arg_2": "Mark 5"},
+            {"func": "print", "arg_1": "Result: Mark 5"}
+        ]
+    }
+}
